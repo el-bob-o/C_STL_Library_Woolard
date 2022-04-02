@@ -9,7 +9,19 @@ create a single main.cpp that contains code samples and implementations of each 
 #include <vector>
 #include <algorithm>
 #include <string>
+#include <cassert>
+#include <stack>
+#include <set>
+#include <utility>
+#include <map>
 using namespace std;
+typedef map<string,int> MapT; //Declarations for the Map sections
+typedef MapT::const_iterator MapIterT;
+
+bool less_than_7(int value) //Bool declaration for Predicate_Algorithm
+    {
+        return value < 7;
+    }
 
 //Credit https://www.geeksforgeeks.org/passing-vector-constructor-c/ clarifications added
 class MyClassVector1
@@ -166,39 +178,109 @@ int main()
 
 
     /****Section_Name*** Stack*/
+    cout << "\nStack\n";
 
+    stack<int> st;
+    st.push(100); //push number on the stack
+    assert( st.size() == 1); //verify one element is on the stack
+    assert( st.top() == 100); //verify element value
 
-    //Write comments that help one better understand what the code is doing.
+    st.top() = 456; //assign new value
+    assert( st.top() == 456 );
+
+    st.pop(); //remove element
+    assert( st.empty() == true );
+
 
     /****Section_Name**** Set*/
-    //Write the code as presented in: 3. std::set
+    cout << "\nSet\n";
+    set<int> iset; //set of unique integer numbers
 
-    //Write comments that help one better understand what the code is doing.
+    iset.insert(11); //populate with some values
+    iset.insert(-11);
+    iset.insert(55);
+    iset.insert(22);
+    iset.insert(22);
+
+    if (iset.find(55) != iset.end() ){ //is value already stored?
+      iset.insert(55);
+    }
+    assert( iset.size() == 4 ); //sanity check :3
+    set<int>::iterator itt;
+    for(itt = iset.begin(); itt != iset.end(); itt++ ){
+      cout << " " << *itt;
+    }
 
     /****Section_Name****Pair_Structure*/
-    //Write the code as presented in: 4. std::pair structure
+    cout << "\n\nPair_Structure\n";
+    pair<string,string> strstr; //Initialize strstr to hold 2 elements
+    strstr.first="Hello"; //Set element 1
+    strstr.second="World"; //Set element 2
 
-    //Write comments that help one better understand what the code is doing.
+    pair<int,string> intstr; //Initialize intstr to hold 2 elements (int and string)
+    intstr.first = 1; //Set element 1 (int)
+    intstr.second = "one"; //Set element 2 (string)
+
+    pair<string,int> strint("two",2); //Initialize strint to hold a sting and an int
+    assert(strint.first == "two"); //error checking
+    assert(strint.second == 2); //error checking
+
 
     /****Section_Name**** Map_Insert*/
-    //Write the code as presented in: 14. std::map::insert
+    cout << "\nMap_Insert\n";
+    MapT amap; //Initialize amap
+    pair< MapIterT, bool> result =
+        amap.insert(make_pair("Fred",45)); //Populate amap
 
-    //Write comments that help one better understand what the code is doing.
+    assert(result.second == true); //error checking
+    assert(result.first->second == 45);
+
+    result = amap.insert(make_pair("Fred",54));
+
+    // Fred was already in the map, and result.first
+    // simply points there now:
+    assert(result.second == false);
+    assert(result.first->second == 45);
 
     /****Section_Name****Map_Summary*/
-    //Write the code as presented in: 16. Map summary
-
-    //Write comments that help one better understand what the code is doing.
+    cout << "\nMap_Summary\n";
+    map<string,string> phone_book; //Initialize phone_book map
+        phone_book["411"] = "Directory"; //Setting Key and mapped values
+        phone_book["911"] = "Emergency";
+        phone_book["508-678-2811"] = "BCC";
+        if (phone_book.find("411")!=phone_book.end()) {
+            phone_book.insert( //add new element to the map
+                make_pair(
+                    string("411"),
+                    string("Directory")
+                )
+            );
+        }
+        assert(phone_book.size()==3); //error checking
+        map<string,string>::const_iterator itm;
+        for (itm = phone_book.begin(); itm != phone_book.end(); ++itm) { //loop to print contents of phone_book
+            cout
+                << " " << itm->first
+                << " " << itm->second
+                << endl
+                ;
+        }
 
     /****Section_Name**** Sort_Algorithm*/
-    //Write the code as presented in: 23. sort example
+    cout << "\nSort_Algorithm\n";
+    int arr[100]; //Initialize an array
+    sort(arr, arr + 100); //sort the array
 
-    //Write comments that help one better understand what the code is doing.
+    vector<int>v1; //Initialize vector
+    sort(v1.begin(), v1.end()); //sort the vector
 
     /****Section_Name****Predicate_Algorithm*/
-    //Write the code as presented in: 25. count_if and predicate function
+    cout << "\nPredicate_Algorithm\n";
 
-    //Write comments that help one better understand what the code is doing.
+    vector<int> v2; //Initialize vector
+    int count_less = std::count_if(v2.begin(), v2.end(), less_than_7); //return number of elements that are less                                                                              than 7
 
-      return 0;
+
+    return 0;
  }
+
